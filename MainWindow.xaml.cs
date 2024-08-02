@@ -83,6 +83,8 @@ namespace SerialPortDgn
 
                 tbScaleName.IsEnabled = false;
                 tbFolderPath.IsEnabled = false;
+                cbSerialPort.IsEnabled = false;
+                cbBaudrate.IsEnabled = false;
                 btnBrowse.IsEnabled = false;
                 rbHundredLines.IsEnabled = false;
                 rbOneLine.IsEnabled = false;
@@ -97,6 +99,10 @@ namespace SerialPortDgn
         }
         private void BtnDisconnect_Click(object sender, RoutedEventArgs e)
         {
+            Disconnect();
+        }
+        private void Disconnect()
+        {
             if (serialPort != null && serialPort.IsOpen)
             {
                 serialPort.Close();
@@ -109,6 +115,8 @@ namespace SerialPortDgn
 
                 tbScaleName.IsEnabled = true;
                 tbFolderPath.IsEnabled = true;
+                cbSerialPort.IsEnabled = true;
+                cbBaudrate.IsEnabled = true;
                 btnBrowse.IsEnabled = true;
                 rbHundredLines.IsEnabled = true;
                 rbOneLine.IsEnabled = true;
@@ -145,6 +153,14 @@ namespace SerialPortDgn
                 // Limpar os dados recebidos já processados
                 receivedData.Clear();
                 receivedData.Append(completeData);
+            }
+            catch (IOException)
+            {
+                Dispatcher.Invoke(() =>
+                {
+                    MessageBox.Show("Erro de conexão. A porta serial foi desconectada.");
+                    Disconnect();
+                });
             }
             catch (TimeoutException) { }
             catch (Exception ex)
