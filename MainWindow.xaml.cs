@@ -15,11 +15,13 @@ namespace SerialPortDgn
         private string filePath;
         private string scaleName;
         private int limitLine = 100;
+        private string version = "1.0.1";
         public MainWindow()
         {
             InitializeComponent();
             LoadSerialPorts();
             LoadBaudRates();
+            Init();
         }
 
         private void LoadSerialPorts()
@@ -181,6 +183,10 @@ namespace SerialPortDgn
             }
 
             File.WriteAllLines(path, lines);
+        }
+        private void Init()
+        {
+            lbVersion.Content = $"Versão:{version}";
         }
     }
 }
